@@ -1,3 +1,5 @@
+//Wyswietlenie bilansu od uruchomienia skryptu po wpisaniu b()
+
 var startValue = '0.00000001', 					// wartosc startowa, NIE ZMIENIAJ PRZECINKA I ILOSCI ZNAKOW
 stopPercentage = 0.001,							//(stan konta)/(stawka) jakiej wartosci nie moze przekroczyc (jak przekroczy to sie resetuje do wartosci startowej)
 maxWait = 777,									//maksymalna wartosc losowego czasu czekania (czas czekania bedzie mial wartosc minWait+(x < maxWait) )
@@ -13,17 +15,19 @@ debugWait 		= debugData,					//zmienne pozwalajace na indywidualne ustawianie co
 debugMultiply 	= debugData,
 debugStart 		= debugData,
 debugStop 		= debugData,
-debugLose 		= debugData,
-debugWin 		= debugData,
+debugWin        = debugData,
+debugLose       = debugData
+debugCountLose 	= debugData,
+debugCountWin 	= debugData,
 debugBilans		= debugData,					//zeby dzialalo wpisanie "b" musi byc wlaczona przynajmniej 1 wartosc bilans
 												//zmienne co ma sie wywietlac w trybie zrozumialym dla usera
 userMultiply 	= userData,
 userWait 		= userData,
 userStart 		= userData,
-usterStop 		= userData,
+userStop 		= userData,
 userRedirect 	= userData,
-userLose 		= userData,
-userWin 		= userData,
+userCountLose 	= userData,
+userCountWin 	= userData,
 userBilans 		= userData;
 
 
@@ -48,20 +52,20 @@ function multiply(){										//funkcja zwiekszajaca wartosc stawki
     	console.log('Stara stawka: "'+current+'". Nowa: "'+multiply+'".');	//wypisze w konsoli aktualna i nastepna stawke
     }
     if(debugMultiply){
-    	console.log('T'+current+'N'+multiply);
+    	console.log('M'+current+'N'+multiply);             //M0.00000001N0.00000002       Multiply + newMultiply
     }
 }
 
 
-function getRandomWait(){											//funkcja losująca czas oczekiwania przed kliknieciem
-    var wait = Math.floor(Math.random() * maxWait) + minWait;		//okreslanie ile czasu skrypt ma czekac
+function getRandomWait(){										     //funkcja losująca czas oczekiwania przed kliknieciem
+    var wait = Math.floor(Math.random() * maxWait) + minWait;	      //okreslanie ile czasu skrypt ma czekac
     if(userWait){
     	console.log('Czekanie ' + wait + 'ms przed nastepnym zakladem.');	//informacja o czasie oczekiwania
     }
     if(debugWait){
-    	console.log('RW'+wait);
+    	console.log('T'+wait);                                     //Wait+time 
     }
-    return wait ;													//zwrocenie czasu oczekiwania do miejsca gdzi funkcja zostala wywolana
+    return wait ;												   //zwrocenie czasu oczekiwania do miejsca gdzi funkcja zostala wywolana
 }
 
 function startGame(){							//funkcja rozpoczynajaca dzialanie skryptu
@@ -76,7 +80,7 @@ function startGame(){							//funkcja rozpoczynajaca dzialanie skryptu
 }
 	
 function stopGame(){											//funkcja zatrzymujaca skrypt
-	if(usterStop){
+	if(userStop){
     	console.log('Game will stop soon! Let me finish.');		//informacja o tym ze gra sie zaraz skonczy
 	}
 	if(debugStop){
@@ -112,12 +116,12 @@ function stopBeforeRedirect(){											//zatrzymanie przed przekierowaniem? ni
     return false;														//zwraca false
 }									//nie rozumiem o co chodzi z tym czasem
 
-function b(){		
+function b(){		                                             //funkcja zwracajaca bilans b()
 	if(userBilans){										
 		console.log('Stan konta od uruchomienia zmienil sie o: "'+bilans+'"');
 	}
 	if(debugBilans){
-		console.log('B'+bilans);
+		console.log('B'+bilans);       
 	}
 }
 
@@ -127,14 +131,17 @@ $('#double_your_btc_bet_win').unbind();											//odpiecie pilnowania stanu wi
 $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){		//ustawienie pilnowania stanu lose
     if( $(event.currentTarget).is(':contains("lose")') )						//jezeli stan 
     {
-    	bilans-= getCurrent;													//po przegranej odejmuje aktualna stawke od bilansu 
 
+    	bilans-= getCurrent();													//po przegranej odejmuje aktualna stawke od bilansu 
 
+        if(debugLose){
+            console.log("LOSE");
+        }
     	if (userLose){
         	console.log('Przegrales! Podwajanie zakladu.');						//informacja ze przegrales
     	}
         multiply();                 											//wywolanie funkcji zwiekszajacej zaklad
-        if (debugLose){															//informacja do debugowania informujaca o ilosci wygran do przegania
+        if (debugCountLose){															//informacja do debugowania informujaca o ilosci wygran do przegania
 	        if(win>0){															//jezeli miales jakies wygrane
 	            console.log('W'+win);											//to wyswietli informacje ile ich bylo 
 	            win=0;															//i wyczysci licznik
@@ -149,11 +156,13 @@ $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){		//ust
 $('#double_your_btc_bet_win').bind("DOMSubtreeModified",function(event){		//pilnowanie stanu zmiennej win?
     if( $(event.currentTarget).is(':contains("win")') )							//jezeli w tekscie znajduje sie "win"
     {
+        
+    	bilans+= getCurrent();													//po wygranej dodaje do bilansu aktualna stawke
 
-    	bilans+= getCurrent;													//po wygranej dodaje do bilansu aktualna stawke
-
-
-    	if(debugWin){															//ifnormacja o ilosci przegranych 
+        if(debugWin){
+            console.log("WIN");
+        }
+    	if(debugCountWin){															//ifnormacja o ilosci przegranych 
 	        if(lose>0){															//jezeli wczesniej przegrywales 
 	            console.log(lose+'L');											//to wypisze ile razy 
 	            lose=0;															//i wyczysci licznik
