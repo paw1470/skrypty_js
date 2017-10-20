@@ -41,7 +41,8 @@ function getCurrent() {										//funkcja wyciagajaca zwracajaca jaka jest aktu
 }
 
 function multiply(){										//funkcja zwiekszajaca wartosc stawki
-    var multiply = (getCurrent * 2).toFixed(8);				//zmienna obliczajaca nowa wartosc i poprawiajaca format danych
+    var current = getCurrent();
+    var multiply = (current * 2).toFixed(8);				//zmienna obliczajaca nowa wartosc i poprawiajaca format danych
     $('#double_your_btc_stake').val(multiply);				//wpisanie nowej wartosci stawki 
     if(userMultiply){
     	console.log('Stara stawka: "'+current+'". Nowa: "'+multiply+'".');	//wypisze w konsoli aktualna i nastepna stawke
