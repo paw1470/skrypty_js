@@ -6,6 +6,7 @@ maxWait = 777,									//maksymalna wartosc losowego czasu czekania (czas czekan
 minWait = 1,									//staly minimalny czas czekania
 stopped = false, 								//? debugging 
 stopBefore = 1, 								//? In minutes for timer before stopping redirect on webpage
+maxLose = 100,									//ile razy mozesz przegrac
 
 //Uzywaj wyswietlania danych tylko w formacie debug lub user bo sie syf robi w konsoli przy obu 
 debugData 		= true,							//ogolne ustawienie jakie informacje maja sie wyswietlac w stylu ulatwiajacym debugowanie
@@ -140,6 +141,7 @@ $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){		//ust
     {
 
     	bilans-= getCurrent();													//po przegranej odejmuje aktualna stawke od bilansu 
+		lose++;																	//doda 1 przegrana do licznika
 
         if(debugLose){
             console.log("LOSE");
@@ -148,13 +150,16 @@ $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){		//ust
         	console.log('Przegrales! Podwajanie zakladu.');						//informacja ze przegrales
     	}
         multiply();                 											//wywolanie funkcji zwiekszajacej zaklad
-        if (debugCountLose){															//informacja do debugowania informujaca o ilosci wygran do przegania
-	        if(win>0){															//jezeli miales jakies wygrane
-	            console.log('W'+win);											//to wyswietli informacje ile ich bylo 
-	            win=0;															//i wyczysci licznik
+	    if(win>0){																//jezeli miales jakies wygrane
+        	if (debugCountLose){												//informacja do debugowania informujaca o ilosci wygran do przegania
+	            console.log('W'+win);											//to wyswietli informacje ile ich bylo  															
 	        }
-	        lose++;																//doda 1 przegrana do licznika
+	        win=0;																//i wyczysci licznik
 	    }
+	    if(lose>maxLose){														//jezeli przegrales wiecej razy niz ustawiles to resetuje stawke
+	    	reset();
+	    }
+
         setTimeout(function(){													//ustawia po jakim czasie ma kliknac przycisk
             $loButton.trigger('click');
         }, getRandomWait());
@@ -165,16 +170,16 @@ $('#double_your_btc_bet_win').bind("DOMSubtreeModified",function(event){		//piln
     {
         
     	bilans+= getCurrent();													//po wygranej dodaje do bilansu aktualna stawke
+	    win++;																	//zwiekszy licznik wygranych o 1
 
         if(debugWin){
             console.log("WIN");
         }
-    	if(debugCountWin){															//ifnormacja o ilosci przegranych 
-	        if(lose>0){															//jezeli wczesniej przegrywales 
+	    if(lose>0){																//jezeli wczesniej przegrywales 
+			if(debugCountWin){													//ifnormacja o ilosci przegranych 
 	            console.log(lose+'L');											//to wypisze ile razy 
-	            lose=0;															//i wyczysci licznik
 	        }
-	        win++;																//zwiekszy licznik wygranych o 1
+	       	lose=0;																//i wyczysci licznik
 	    }
         if( stopBeforeRedirect() )												//zatrzyma przekierowanie ?
         {
