@@ -31,6 +31,7 @@ userCountLose 	= userData,
 userCountWin 	= userData,
 userBilans 		= userData,
 userWinReset    = userData,
+userLose        = userData,
 userWin         = userData;
 
 
