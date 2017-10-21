@@ -16,10 +16,11 @@ debugMultiply 	= debugData,
 debugStart 		= debugData,
 debugStop 		= debugData,
 debugWin        = debugData,
-debugLose       = debugData
+debugLose       = debugData,
 debugCountLose 	= debugData,
 debugCountWin 	= debugData,
 debugBilans		= debugData,					//zeby dzialalo wpisanie "b" musi byc wlaczona przynajmniej 1 wartosc bilans
+debugReset      = debugData,
 												//zmienne co ma sie wywietlac w trybie zrozumialym dla usera
 userMultiply 	= userData,
 userWait 		= userData,
@@ -28,7 +29,9 @@ userStop 		= userData,
 userRedirect 	= userData,
 userCountLose 	= userData,
 userCountWin 	= userData,
-userBilans 		= userData;
+userBilans 		= userData,
+userWinReset    = userData,
+userWin         = userData;
 
 
 //---------------------------------------DALEJ NIE RUSZAC BO SIE ZACZYNA KOD------------------------------------
@@ -90,6 +93,9 @@ function stopGame(){											//funkcja zatrzymujaca skrypt
 }
 
 function reset(){												//funkja resetujaca stawke
+    if(debugReset){
+        console.log("R"+getCurrent+"N"+startValue);
+    }
     $('#double_your_btc_stake').val(startValue);				//ustawienie stawki do wartosci startowej
 }
 
@@ -175,7 +181,7 @@ $('#double_your_btc_bet_win').bind("DOMSubtreeModified",function(event){		//piln
         }
         if( iHaveEnoughMoni() )													//jezeli kod chce postawic wiecej niz pozwoliles
         {
-        	if(userWin){
+        	if(userWinReset){
             	console.log('You WON! But don\'t be greedy. Restarting!');		//informacja ze wygrales ale stawiasz wiecej niz planowales wiec cie restartuje
         	}
             reset();
