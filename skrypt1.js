@@ -1,11 +1,10 @@
-//Wyswietlenie bilansu od uruchomienia skryptu po wpisaniu b()
-
 var startValue = '0.00000001', 					// wartosc startowa, NIE ZMIENIAJ PRZECINKA I ILOSCI ZNAKOW
 stopPercentage = 0.001,							//(stan konta)/(stawka) jakiej wartosci nie moze przekroczyc (jak przekroczy to sie resetuje do wartosci startowej)
 maxWait = 777,									//maksymalna wartosc losowego czasu czekania (czas czekania bedzie mial wartosc minWait+(x < maxWait) )
 minWait = 1,									//staly minimalny czas czekania
 stopped = false, 								//? debugging 
 stopBefore = 1, 								//? In minutes for timer before stopping redirect on webpage
+maxLose = 100,                                  //ile razy maksymalnie moze przegrac do resetowania stawki
 
 //Uzywaj wyswietlania danych tylko w formacie debug lub user bo sie syf robi w konsoli przy obu 
 debugData 		= true,							//ogolne ustawienie jakie informacje maja sie wyswietlac w stylu ulatwiajacym debugowanie
@@ -15,24 +14,18 @@ debugWait 		= debugData,					//zmienne pozwalajace na indywidualne ustawianie co
 debugMultiply 	= debugData,
 debugStart 		= debugData,
 debugStop 		= debugData,
-debugWin        = debugData,
-debugLose       = debugData,
-debugCountLose 	= debugData,
-debugCountWin 	= debugData,
+debugLose 		= debugData,
+debugWin 		= debugData,
 debugBilans		= debugData,					//zeby dzialalo wpisanie "b" musi byc wlaczona przynajmniej 1 wartosc bilans
-debugReset      = debugData,
 												//zmienne co ma sie wywietlac w trybie zrozumialym dla usera
 userMultiply 	= userData,
 userWait 		= userData,
 userStart 		= userData,
-userStop 		= userData,
+usterStop 		= userData,
 userRedirect 	= userData,
-userCountLose 	= userData,
-userCountWin 	= userData,
-userBilans 		= userData,
-userWinReset    = userData,
-userLose        = userData,
-userWin         = userData;
+userLose 		= userData,
+userWin 		= userData,
+userBilans 		= userData;
 
 
 //---------------------------------------DALEJ NIE RUSZAC BO SIE ZACZYNA KOD------------------------------------
@@ -49,27 +42,26 @@ function getCurrent() {										//funkcja wyciagajaca zwracajaca jaka jest aktu
 }
 
 function multiply(){										//funkcja zwiekszajaca wartosc stawki
-    var current = getCurrent();
-    var multiply = (current * 2).toFixed(8);				//zmienna obliczajaca nowa wartosc i poprawiajaca format danych
+    var multiply = (getCurrent * 2).toFixed(8);				//zmienna obliczajaca nowa wartosc i poprawiajaca format danych
     $('#double_your_btc_stake').val(multiply);				//wpisanie nowej wartosci stawki 
     if(userMultiply){
     	console.log('Stara stawka: "'+current+'". Nowa: "'+multiply+'".');	//wypisze w konsoli aktualna i nastepna stawke
     }
     if(debugMultiply){
-    	console.log('M'+current+'N'+multiply);             //M0.00000001N0.00000002       Multiply + newMultiply
+    	console.log('T'+current+'N'+multiply);
     }
 }
 
 
-function getRandomWait(){										     //funkcja losująca czas oczekiwania przed kliknieciem
-    var wait = Math.floor(Math.random() * maxWait) + minWait;	      //okreslanie ile czasu skrypt ma czekac
+function getRandomWait(){											//funkcja losująca czas oczekiwania przed kliknieciem
+    var wait = Math.floor(Math.random() * maxWait) + minWait;		//okreslanie ile czasu skrypt ma czekac
     if(userWait){
     	console.log('Czekanie ' + wait + 'ms przed nastepnym zakladem.');	//informacja o czasie oczekiwania
     }
     if(debugWait){
-    	console.log('T'+wait);                                     //Wait+time 
+    	console.log('RW'+wait);
     }
-    return wait ;												   //zwrocenie czasu oczekiwania do miejsca gdzi funkcja zostala wywolana
+    return wait ;													//zwrocenie czasu oczekiwania do miejsca gdzi funkcja zostala wywolana
 }
 
 function startGame(){							//funkcja rozpoczynajaca dzialanie skryptu
@@ -84,7 +76,7 @@ function startGame(){							//funkcja rozpoczynajaca dzialanie skryptu
 }
 	
 function stopGame(){											//funkcja zatrzymujaca skrypt
-	if(userStop){
+	if(usterStop){
     	console.log('Game will stop soon! Let me finish.');		//informacja o tym ze gra sie zaraz skonczy
 	}
 	if(debugStop){
@@ -94,9 +86,6 @@ function stopGame(){											//funkcja zatrzymujaca skrypt
 }
 
 function reset(){												//funkja resetujaca stawke
-    if(debugReset){
-        console.log("R"+getCurrent+"N"+startValue);
-    }
     $('#double_your_btc_stake').val(startValue);				//ustawienie stawki do wartosci startowej
 }
 
@@ -123,12 +112,12 @@ function stopBeforeRedirect(){											//zatrzymanie przed przekierowaniem? ni
     return false;														//zwraca false
 }									//nie rozumiem o co chodzi z tym czasem
 
-function b(){		                                             //funkcja zwracajaca bilans b()
+function b(){		
 	if(userBilans){										
 		console.log('Stan konta od uruchomienia zmienil sie o: "'+bilans+'"');
 	}
 	if(debugBilans){
-		console.log('B'+bilans);       
+		console.log('B'+bilans);
 	}
 }
 
@@ -138,17 +127,18 @@ $('#double_your_btc_bet_win').unbind();											//odpiecie pilnowania stanu wi
 $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){		//ustawienie pilnowania stanu lose
     if( $(event.currentTarget).is(':contains("lose")') )						//jezeli stan 
     {
+    	bilans-= getCurrent;													//po przegranej odejmuje aktualna stawke od bilansu 
 
-    	bilans-= getCurrent();													//po przegranej odejmuje aktualna stawke od bilansu 
 
-        if(debugLose){
-            console.log("LOSE");
-        }
     	if (userLose){
         	console.log('Przegrales! Podwajanie zakladu.');						//informacja ze przegrales
     	}
+
         multiply();                 											//wywolanie funkcji zwiekszajacej zaklad
-        if (debugCountLose){															//informacja do debugowania informujaca o ilosci wygran do przegania
+        if(lose>maxLose){
+            reset();
+        }
+        if (debugLose){															//informacja do debugowania informujaca o ilosci wygran do przegania
 	        if(win>0){															//jezeli miales jakies wygrane
 	            console.log('W'+win);											//to wyswietli informacje ile ich bylo 
 	            win=0;															//i wyczysci licznik
@@ -163,13 +153,11 @@ $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){		//ust
 $('#double_your_btc_bet_win').bind("DOMSubtreeModified",function(event){		//pilnowanie stanu zmiennej win?
     if( $(event.currentTarget).is(':contains("win")') )							//jezeli w tekscie znajduje sie "win"
     {
-        
-    	bilans+= getCurrent();													//po wygranej dodaje do bilansu aktualna stawke
 
-        if(debugWin){
-            console.log("WIN");
-        }
-    	if(debugCountWin){															//ifnormacja o ilosci przegranych 
+    	bilans+= getCurrent;													//po wygranej dodaje do bilansu aktualna stawke
+
+
+    	if(debugWin){															//ifnormacja o ilosci przegranych 
 	        if(lose>0){															//jezeli wczesniej przegrywales 
 	            console.log(lose+'L');											//to wypisze ile razy 
 	            lose=0;															//i wyczysci licznik
@@ -182,7 +170,7 @@ $('#double_your_btc_bet_win').bind("DOMSubtreeModified",function(event){		//piln
         }
         if( iHaveEnoughMoni() )													//jezeli kod chce postawic wiecej niz pozwoliles
         {
-        	if(userWinReset){
+        	if(userWin){
             	console.log('You WON! But don\'t be greedy. Restarting!');		//informacja ze wygrales ale stawiasz wiecej niz planowales wiec cie restartuje
         	}
             reset();
