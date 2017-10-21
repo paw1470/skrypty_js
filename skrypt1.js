@@ -129,7 +129,7 @@ $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){		//ust
     {
     	bilans-= getCurrent;													//po przegranej odejmuje aktualna stawke od bilansu 
 
-
+		lose++;	
     	if (userLose){
         	console.log('Przegrales! Podwajanie zakladu.');						//informacja ze przegrales
     	}
@@ -138,13 +138,13 @@ $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){		//ust
         if(lose>maxLose){
             reset();
         }
-        if (debugLose){															//informacja do debugowania informujaca o ilosci wygran do przegania
-	        if(win>0){															//jezeli miales jakies wygrane
+        if(win>0){	
+        	if (debugLose){															//informacja do debugowania informujaca o ilosci wygran do przegania
 	            console.log('W'+win);											//to wyswietli informacje ile ich bylo 
-	            win=0;															//i wyczysci licznik
 	        }
-	        lose++;																//doda 1 przegrana do licznika
+	        win=0;																
 	    }
+
         setTimeout(function(){													//ustawia po jakim czasie ma kliknac przycisk
             $loButton.trigger('click');
         }, getRandomWait());
@@ -156,13 +156,12 @@ $('#double_your_btc_bet_win').bind("DOMSubtreeModified",function(event){		//piln
 
     	bilans+= getCurrent;													//po wygranej dodaje do bilansu aktualna stawke
 
-
-    	if(debugWin){															//ifnormacja o ilosci przegranych 
-	        if(lose>0){															//jezeli wczesniej przegrywales 
-	            console.log(lose+'L');											//to wypisze ile razy 
-	            lose=0;															//i wyczysci licznik
+		win++;
+		if(lose>0){
+    		if(debugWin){															
+	            console.log(lose+'L');											//to wypisze ile razy
 	        }
-	        win++;																//zwiekszy licznik wygranych o 1
+	        lose=0;															//i wyczysci licznik																//zwiekszy licznik wygranych o 1
 	    }
         if( stopBeforeRedirect() )												//zatrzyma przekierowanie ?
         {
