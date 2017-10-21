@@ -7,8 +7,8 @@ stopBefore = 1, 								//? In minutes for timer before stopping redirect on web
 maxLose = 100,                                  //ile razy maksymalnie moze przegrac do resetowania stawki
 
 //Uzywaj wyswietlania danych tylko w formacie debug lub user bo sie syf robi w konsoli przy obu 
-debugData 		= true,							//ogolne ustawienie jakie informacje maja sie wyswietlac w stylu ulatwiajacym debugowanie
-userData 		= true,							//ogolne ustawienie pozwalajace wlaczyc informacje zrozumiale dla zwyklego czlowieka
+debugData 		= false,							//ogolne ustawienie jakie informacje maja sie wyswietlac w stylu ulatwiajacym debugowanie
+userData 		= false,							//ogolne ustawienie pozwalajace wlaczyc informacje zrozumiale dla zwyklego czlowieka
 
 debugWait 		= debugData,					//zmienne pozwalajace na indywidualne ustawianie co ma sie wyswietlac w trybie debug
 debugMultiply 	= debugData,
@@ -25,7 +25,7 @@ usterStop 		= userData,
 userRedirect 	= userData,
 userLose 		= userData,
 userWin 		= userData,
-userBilans 		= userData;
+userBilans 		= true;
 
 
 //---------------------------------------DALEJ NIE RUSZAC BO SIE ZACZYNA KOD------------------------------------
