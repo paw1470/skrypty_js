@@ -84,6 +84,7 @@ function startGame(){							//funkcja rozpoczynajaca dzialanie skryptu
     	console.log("START");
     }
     reset();									//resetowanie stawki 
+
     $loButton.trigger('click');					//klikniecie przycisku lo
 }
 	
@@ -99,7 +100,7 @@ function stopGame(){											//funkcja zatrzymujaca skrypt
 
 function reset(){												//funkja resetujaca stawke
     if(debugReset){
-        console.log("R"+getCurrent+"N"+startValue);
+        console.log("R"+getCurrent()+"N"+startValue);
     }
     $('#double_your_btc_stake').val(startValue);				//ustawienie stawki do wartosci startowej
 }
@@ -135,7 +136,6 @@ function b(){		                                             //funkcja zwracajaca
 		console.log('B'+bilans);       
 	}
 }
-
 
 $('#double_your_btc_bet_lose').unbind();										//odpiecie pilnowania stanu lose?
 $('#double_your_btc_bet_win').unbind();											//odpiecie pilnowania stanu win?
