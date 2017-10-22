@@ -12,28 +12,31 @@ maxLose = 100,									//ile razy mozesz przegrac
 debugData 		= false,							//ogolne ustawienie jakie informacje maja sie wyswietlac w stylu ulatwiajacym debugowanie
 userData 		= false,							//ogolne ustawienie pozwalajace wlaczyc informacje zrozumiale dla zwyklego czlowieka
 
-debugWait 		= debugData,					//zmienne pozwalajace na indywidualne ustawianie co ma sie wyswietlac w trybie debug
-debugMultiply 	= debugData,
-debugStart 		= debugData,
-debugStop 		= debugData,
-debugWin        = debugData,
-debugLose       = debugData,
-debugCountLose 	= debugData,
-debugCountWin 	= debugData,
-debugBilans		= debugData,					//zeby dzialalo wpisanie "b" musi byc wlaczona przynajmniej 1 wartosc bilans
-debugReset      = debugData,
-												//zmienne co ma sie wywietlac w trybie zrozumialym dla usera
-userMultiply 	= userData,
-userWait 		= userData,
-userStart 		= userData,
-userStop 		= userData,
-userRedirect 	= userData,
-userCountLose 	= userData,
-userCountWin 	= userData,
-userBilans 		= true,
-userWinReset    = userData,
-userLose        = userData,
-userWin         = userData;
+//zmienne pozwalajace na indywidualne ustawianie co ma sie wyswietlac w trybie debug
+//informacje w trybie streszczonym do debugowania
+debugWait 		= debugData,					//informacja o czasie oczekiwania przed kliknieciem "T?"		
+debugMultiply 	= debugData,					//informacja o dzialaniu funkcji multiply "M?N?"
+debugStart 		= debugData,					//informacja o wywolaniu start "START"
+debugStop 		= debugData,					//informacja o wywolaniu stop "STOP"
+debugWin        = debugData,					//informacja o wygranej "WIN"
+debugLose       = debugData,					//informacja o przegranej "LOSE"
+debugCountLose 	= debugData,					//informacja o passie przegranyc "L?"
+debugCountWin 	= debugData,					//informacja o passie wygranych "W?"
+debugBilans		= debugData,					//informacja o bilansie zyskow i strat od uruchomienia skryptu (po wpisaniu "b()")
+debugReset      = debugData,					//informacja o resetowaniu zakladu do wartosci poczatkowej
+
+//informaje wyswietlane w trybie dla zwyklego usera
+userMultiply 	= userData,						//wyswietlanie dzialania funkcji multiply
+userWait 		= userData,						//wyswietlanie czasu oczekiwania przed kliknieciem
+userStart 		= userData,						//wyswietlanie informacji o wywolaniu funkcji start
+userStop 		= userData,						//wyswietlenie informacji o funkcji stop
+userRedirect 	= userData,						//informacja o zatrzymaniu przekierowania
+userCountLose 	= userData,						//informacja ile trwala passa przegranych
+userCountWin 	= userData,						//informacja ile trwala passa wygranych
+userBilans 		= true,							//wyswietlenie ile zarobil lub stracil skrypt (zwraca wartosc po wpisaniu "b()")
+userWinReset    = userData,						//informacja o resetowaniu zakladu do wartosci startowej
+userLose        = userData,						//informacja ze wygrales
+userWin         = userData;						//informacja ze przegrales
 
 
 //---------------------------------------DALEJ NIE RUSZAC BO SIE ZACZYNA KOD------------------------------------
