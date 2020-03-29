@@ -54,6 +54,7 @@ function reset(){												//funkja resetujaca stawke
     $('#double_your_btc_stake').val(startValue);				//ustawienie stawki do wartosci startowej
     currentLose = 0;
     currentWin = 0;
+    currentBilans = 0;
 }
 
 function deexponentize(number){									//?
