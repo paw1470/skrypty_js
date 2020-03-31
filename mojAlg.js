@@ -1,35 +1,35 @@
-//Wyswietlenie bilansu od uruchomienia skryptu po wpisaniu b()
-
-var startValue = '0.00000001', 					// wartosc startowa, NIE ZMIENIAJ PRZECINKA I ILOSCI ZNAKOW
-maxValue = '0.00001000',						//ile max moze postawic 
-maxWait = 777,									//maksymalna wartosc losowego czasu czekania (czas czekania bedzie mial wartosc minWait+(x < maxWait) )
-minWait = 1,									//staly minimalny czas czekania
+var betStart = '0.00000002', 					// wartosc startowa, NIE ZMIENIAJ PRZECINKA I ILOSCI ZNAKOW
+betMax = '0.00001000',						    //ile max moze postawic w jednym zakładzie. Sugeruję nie wiecej niż 1/50.
+waitMax = 777,									//maksymalna wartosc losowego czasu czekania (czas czekania bedzie mial wartosc minWait+(x < maxWait) )
+waitMin = 1,									//staly minimalny czas czekania
 buttonLo = true,								//zmienna dla wyboru przycisku na start, jak true to lo, false to hi
-
+betsNumberMax = 0,                                 //po ilu zakładach gra ma się zakończyć. 0 = bez limitu
+bilansMaxLose = '0.00010000';                    //po jakiej stracie ma zakończyć działanie
 
 //---------------------------------------DALEJ NIE RUSZAC BO SIE ZACZYNA KOD------------------------------------
 
-var win = 0,									//ile razy wygrales
-lose = 0,										//ile razy przegrales
-currentLose = 0,
-currentWin = 0,
-clickCount = 0,									//zmienna do zapisywania ile razy kliknal przycisk
-bilans = 0,                                     //ogolny bilans gry
-currentBilans = 0;								//zmienna do trzymania bilansu dla aktualnej stawki
+var winTotal = 0,									//ile razy od początku dziłania skryptu
+loseTotal = 0,										//ile razy przegrales od początku działania skryptu
+loseCurrent = 0,                                    //ile razy przegrałeć podczas aktualnej gry
+winCurrent = 0,                                     //ile razy wygrałeś podczas aktualnej gry
+betsCounter = 0,									//zmienna do liczenia ile było zakładów
+bilansTotal = 0,                                    //ogolny bilans gry
+bilansCurrent = 0;								     //zmienna do trzymania bilansu dla aktualnej stawki
 
 var $loButton = $('#double_your_btc_bet_lo_button'),		//przypisanie przycisku lo
 $hiButton = $('#double_your_btc_bet_hi_button');			//przypisanie przycisku hi
 
-function kliknij(){									//funkcja klikajaca	
-	if(buttonLo){									//jezeli przycisk lo jest true to ma wykonac akcje dla lo
-        $loButton.trigger('click');	
-	}else{											//jezeli ma klikac w hi
-        $hiButton.trigger('click');				//to klika w przycisk hi
-	}
-    clickCount++;							//i zwieksza licznik 
+function click(){			 						//funkcja klikajaca	
+    if(betsNumber == 0 || betsCounter < betsNumberMax){     //jezeli moze klikac w nieskonczonosc albo jeszcze nie osiagnelo limitu
+        if(buttonLo){									//jezeli przycisk lo jest true to ma wykonac akcje dla lo
+            $loButton.trigger('click');	                // kliknij LO
+        }else{											//Jeżeli nie to
+            $hiButton.trigger('click');				     //klika HI
+        }
+        betsCounter++;	 //zwieksza licznik 
 }
 
-function getCurrent() {										//funkcja wyciagajaca zwracajaca jaka jest aktualnie postawiona wartosc, to byla czesc funkcji multiply ale zeby nie kopiowac to zrobilem jako funkcje 
+function getCurrent() {										//funkcja zwracajaca jaka jest aktualnie postawiona wartosc
 	return $('#double_your_btc_stake').val();				//zmienna przechowujaca aktualnie postawiona wartosc
 }
 
@@ -47,81 +47,62 @@ function getRandomWait(){										     //funkcja losująca czas oczekiwania prz
 
 function startGame(){							//funkcja rozpoczynajaca dzialanie skryptu
     reset();									//resetowanie stawki 
-    kliknij();
+    placeBet();
 }
 
 function reset(){												//funkja resetujaca stawke
     $('#double_your_btc_stake').val(startValue);				//ustawienie stawki do wartosci startowej
-    currentLose = 0;
-    currentWin = 0;
-    currentBilans = 0;
+    loseCurrent = 0;
+    winCurrent = 0;
+    bilansCurrent = 0;
 }
 
-function deexponentize(number){									//?
+function floatToInt(number){
     return number * 10000000;
 }
 
-function iHaveEnoughMoni(){												//funkcja okreslajaca czy stac cie na podniesienie stawki 
-    var balance = deexponentize(parseFloat($('#balance').text()));		//pobranie stanu konta?
-    var current = deexponentize($('#double_your_btc_stake').val());		//pobranie wartosci aktualnej stawki 
-    return ((balance)*2/100) * (current*2) > stopPercentage/100;		//obliczenie czy skrypt moze sobie pozwolic na podniesienie stawki
+function placeBet(){
+   setTimeout(function(){ 
+       click(); 
+    }, getRandomWait());
 }
-
-function stopBeforeRedirect(){											//zatrzymanie przed przekierowaniem? nie rozumiem o co chodzi bo nie widzialem jak dziala strona
-    var minutes = parseInt($('title').text());							//pobiera tekst z tytulu strony? i zmienia go na liczbe
-    if( minutes < stopBefore )											//jezeli ta liczba jest mniejsza od stop before 
-    {
-        stopGame();														//to zatrzymuje gre i wyswietla informacje
-        return true;													//zwraca true
-    }
-    return false;														//zwraca false
-}									//nie rozumiem o co chodzi z tym czasem
 
 function isMultiplyAllowed(){
     return (getCurrent() * 2) > maxValue;
     
 }
 
-$('#double_your_btc_bet_lose').unbind();										//odpiecie pilnowania stanu lose?
-$('#double_your_btc_bet_win').unbind();											//odpiecie pilnowania stanu win?
+function printWinInfo(){
+    console.log("Aktualny bilans: " + bilansCurrent + ". Ogólny bilans: " + bilansTotal + ". Aktualne win/lose " + winCurrent+ "/" + loseCurrent + ". Ogólne win/lose " + winTotal + "/" + loseTotal);
+}
+
+$('#double_your_btc_bet_lose').unbind();										//odpiecie pilnowania stanu lose
+$('#double_your_btc_bet_win').unbind();											//odpiecie pilnowania stanu win
 $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){		//ustawienie pilnowania stanu lose
     if( $(event.currentTarget).is(':contains("lose")') )						//jezeli stan 
     {
-
-    	bilans-= getCurrent();													//po przegranej odejmuje aktualna stawke od bilansu 
-		lose++;																	//doda 1 przegrana do licznika
-        currentLose++;
-        currentBilans-= getCurrent();
+    	bilansCurrent-= getCurrent();													//po przegranej odejmuje aktualna stawke od bilansu 
+        bilansTotal-= getCurrent();
+		loseTotal++;																	//doda 1 przegrana do licznika
+        loseCurrent++;
         if(isMultiplyAllowed()){
             multiply(); 
         }                											//wywolanie funkcji zwiekszajacej zaklad
-        console.log("Aktualny bilans " + currentBilans + ". Aktualne win/lose" + win + "/" + lose);
-        setTimeout(function(){													//ustawia po jakim czasie ma kliknac przycisk
-            kliknij();
-        }, getRandomWait());
+        placeBet();
     }
 });
 $('#double_your_btc_bet_win').bind("DOMSubtreeModified",function(event){		//pilnowanie stanu zmiennej win?
     if( $(event.currentTarget).is(':contains("win")') )							//jezeli w tekscie znajduje sie "win"
     {
-        
-    	bilans+= getCurrent();													//po wygranej dodaje do bilansu aktualna stawke
-	    currentBilans+= getCurrent();
-        win++;																	//zwiekszy licznik wygranych o 1
-        currentWin++;
-        if(currentBilans > 0){
+    	bilansCurrent+= getCurrent();													//po wygranej dodaje do bilansu aktualna stawke
+        bilansTotal+= getCurrent();
+        winTotal++;
+        winCurrent++;
+        if(bilansCurrent > 0){
             reset();
         }        
-        
-        consoleLog("Aktualny bilans: " + currentBilans + ". Ogólny bilans: " + bilans + ". Aktualne win/lose " + win+ "/" + lose + ". Ogólne win/lose " + win + "/" + lose);
-        
-        if( iHaveEnoughMoni() )													//jezeli kod chce postawic wiecej niz pozwoliles
-        {
-            reset();
-        }
-        setTimeout(function(){													//klikniecie po losowym czasie oczekiwania
-            kliknij();
-        }, getRandomWait());
+        printWinInfo();
+        placeBet();
     }
 });
 startGame()																		//wywolanie funkcji rozpoczynajacej gre

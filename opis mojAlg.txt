@@ -1,0 +1,22 @@
+opis działania algorytmu mojAlg.js
+Na początku trzeba ustawić betStart czyli startowy zakład. Będzie to wartość którą algorytm zarobi po każdej wygranej. Statystycznie większe jest prawdopodobieństwo że będziemy mieć małą serię przegranych niż dużą ale jednak nie można wykluczyć że wystąpi seria 15 czy nawet 20 przegranych. Większy zakład startowy to szybszy zysk ale też większe ryzyko.
+
+BetMax ustala maksymalny zakład jaki może postawić algorytm. Po każdej przegranej zakład jest podwajany. Jeżeli seria przegranych będzie bardzo długa to limit nie pozwoli przekroczyć stawki. Nie będzie ona rosła wykładniczo w nieskończoność. Po osiągnięciu limitu stawka się nie zmienia. Algorytm będzie stawiał do momentu odrobienia strat i wyjsciu na +. Nie gwarantuje że tak się stanie ale liczy na to że po jakimś czasie liczba wygranych przekroczy liczbę przegranych i odrobi straty.
+
+waitMin i waitMax ustalają ile ma czekać algorytm przed postawieniem zakładu. Chodzi o to żeby system nie wykrył bota. Ma stawiać zakłady w losowych momentach z zakresu min-max
+
+buttonLo wybiera który przycisk ma być wciskany
+
+betsNumberMax limituje ilość zakładów. Jeżeli wartość będzie większa od 0 to przestanie stawiać po dojściu do limitu
+
+Założenie algorytmu
+Algorytm klika jeden z przycisków i zwiększa licznik zakładów. Jeżeli przekroczy limit to  przestaje stawiać.
+Po każdym kliknięciu wykrywa wiadomość o przegranej lub wygranej. 
+Po przegranej zwiększa liczniki przegranych i zmniejsza bilans. Jeżeli stawka nie przekroczy limitu to ją zwiększa. Po losowym czasie stawia kolejny raz.
+Po wygranej zwiększa bilans i liczniki wygranych. Jeżeli coś zarobił to resetuje zakład do wartości domyślnych.
+
+Dla stawki startowej 2 i max 1000 bezpieczne są serie przegranych do 9 zakładów.
+2, 4, 8, 16, 32, 64, 128, 256, 512.
+1024 już sie nie zrobi bo przekracza licznik. Przy serii 11 przegranych stracimy 4k-2 czyli musimy potem wygrać 4 razy zeby odrobić stratę. 
+1, 2, 3, 4 , 5 , 6 ,  7 ,  8 ,  9 , 10 , 11
+2, 4, 8, 16, 32, 64, 128, 256, 512, 512, 512  = 
