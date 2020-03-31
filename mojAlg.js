@@ -74,7 +74,7 @@ function stop(){
 }
 
 function floatToInt(number){
-    return number * 100000000;
+    return Math.round(number * 100000000);
 }
 
 function isMultiplyAllowed(){
