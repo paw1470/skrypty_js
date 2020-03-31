@@ -20,12 +20,12 @@ var $loButton = $('#double_your_btc_bet_lo_button'),		//przypisanie przycisku lo
 $hiButton = $('#double_your_btc_bet_hi_button');			//przypisanie przycisku hi
 
 function click(){			 						//funkcja klikajaca	
-    if(betsNumber == 0 || betsCounter < betsNumberMax){     //jezeli moze klikac w nieskonczonosc albo jeszcze nie osiagnelo limitu
+   // if(betsNumberMax == 0 || betsCounter < betsNumberMax){     //jezeli moze klikac w nieskonczonosc albo jeszcze nie osiagnelo limitu
         if(buttonLo){									//jezeli przycisk lo jest true to ma wykonac akcje dla lo
             $loButton.trigger('click');	                // kliknij LO
         }else{											//Jeżeli nie to
             $hiButton.trigger('click');				     //klika HI
-        }
+       // }
         betsCounter++;	 //zwieksza licznik 
 }
 
