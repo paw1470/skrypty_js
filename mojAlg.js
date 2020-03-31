@@ -20,17 +20,22 @@ var $loButton = $('#double_your_btc_bet_lo_button'),		//przypisanie przycisku lo
 $hiButton = $('#double_your_btc_bet_hi_button');			//przypisanie przycisku hi
 
 function click(){			 						//funkcja klikajaca	
-   // if(betsNumberMax == 0 || betsCounter < betsNumberMax){     //jezeli moze klikac w nieskonczonosc albo jeszcze nie osiagnelo limitu
+    if(betsNumberMax == 0 || betsCounter < betsNumberMax){     //jezeli moze klikac w nieskonczonosc albo jeszcze nie osiagnelo limitu
         if(buttonLo){									//jezeli przycisk lo jest true to ma wykonac akcje dla lo
             $loButton.trigger('click');	                // kliknij LO
         }else{											//Jeżeli nie to
             $hiButton.trigger('click');				     //klika HI
         }
         betsCounter++;	 //zwieksza licznik 
+    }
 }
 
 function getCurrent() {										//funkcja zwracajaca jaka jest aktualnie postawiona wartosc
 	return $('#double_your_btc_stake').val();				//zmienna przechowujaca aktualnie postawiona wartosc
+}
+
+function getCurrentInt(){
+    return floatToInt(getCurrent());
 }
 
 function multiply(){										//funkcja zwiekszajaca wartosc stawki
@@ -46,6 +51,7 @@ function getRandomWait(){										     //funkcja losująca czas oczekiwania prz
 }
 
 function placeBet(){
+    console.log("stawka: " + getCurrent());
    setTimeout(function(){ 
        click(); 
     }, getRandomWait());
@@ -63,12 +69,16 @@ function startGame(){							//funkcja rozpoczynajaca dzialanie skryptu
     placeBet();
 }
 
+function stop(){
+    betsNumberMax = -1;
+}
+
 function floatToInt(number){
-    return number * 10000000;
+    return number * 100000000;
 }
 
 function isMultiplyAllowed(){
-    return (getCurrent() * 2) > betMax;
+    return (getCurrentInt() * 2) < floatToInt(betMax);
     
 }
 
@@ -81,8 +91,8 @@ $('#double_your_btc_bet_win').unbind();											//odpiecie pilnowania stanu wi
 $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){		//ustawienie pilnowania stanu lose
     if( $(event.currentTarget).is(':contains("lose")') )						//jezeli stan 
     {
-    	bilansCurrent-= getCurrent();													//po przegranej odejmuje aktualna stawke od bilansu 
-        bilansTotal-= getCurrent();
+    	bilansCurrent-= getCurrentInt();													//po przegranej odejmuje aktualna stawke od bilansu 
+        bilansTotal-= getCurrentInt();
 		loseTotal++;																	//doda 1 przegrana do licznika
         loseCurrent++;
         if(isMultiplyAllowed()){
@@ -94,14 +104,15 @@ $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){		//ust
 $('#double_your_btc_bet_win').bind("DOMSubtreeModified",function(event){		//pilnowanie stanu zmiennej win?
     if( $(event.currentTarget).is(':contains("win")') )							//jezeli w tekscie znajduje sie "win"
     {
-    	bilansCurrent+= getCurrent();													//po wygranej dodaje do bilansu aktualna stawke
-        bilansTotal+= getCurrent();
+    	bilansCurrent+= getCurrentInt();													//po wygranej dodaje do bilansu aktualna stawke
+        bilansTotal+= getCurrentInt();
         winTotal++;
         winCurrent++;
+        printWinInfo();
         if(bilansCurrent > 0){
             reset();
         }        
-        printWinInfo();
+       
         placeBet();
     }
 });
