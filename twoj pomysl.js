@@ -1,10 +1,11 @@
 var betStart = '0.00000002', 					// wartosc startowa, NIE ZMIENIAJ PRZECINKA I ILOSCI ZNAKOW
 betMax = '0.00001000',						    //ile max moze postawic w jednym zakładzie. Sugeruję nie wiecej niż 1/50.
+betLoseReset = '0.0000020',
+loseReset = 10,
 waitMax = 777,									//maksymalna wartosc losowego czasu czekania (czas czekania bedzie mial wartosc minWait+(x < maxWait) )
 waitMin = 1,									//staly minimalny czas czekania
 buttonLo = true,								//zmienna dla wyboru przycisku na start, jak true to lo, false to hi
 betsNumberMax = 0,                                 //po ilu zakładach gra ma się zakończyć. 0 = bez limitu
-bilansMaxLose = '0.00010000';                    //po jakiej stracie ma zakończyć działanie
 
 //---------------------------------------DALEJ NIE RUSZAC BO SIE ZACZYNA KOD------------------------------------
 
@@ -97,7 +98,10 @@ $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){		//ust
         loseCurrent++;
         if(isMultiplyAllowed()){
             multiply(); 
-        }                											//wywolanie funkcji zwiekszajacej zaklad
+        }
+        if(loseCurrent > loseReset){     
+            $('#double_your_btc_stake').val(betLoseReset);
+        }
         placeBet();
     }
 });
@@ -109,10 +113,7 @@ $('#double_your_btc_bet_win').bind("DOMSubtreeModified",function(event){		//piln
         winTotal++;
         winCurrent++;
         printWinInfo();
-        if(bilansCurrent > 0){
-            reset();
-        }        
-       
+        reset();       
         placeBet();
     }
 });
