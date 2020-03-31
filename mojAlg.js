@@ -45,9 +45,10 @@ function getRandomWait(){										     //funkcja losująca czas oczekiwania prz
     return wait ;												   //zwrocenie czasu oczekiwania do miejsca gdzi funkcja zostala wywolana
 }
 
-function startGame(){							//funkcja rozpoczynajaca dzialanie skryptu
-    reset();									//resetowanie stawki 
-    placeBet();
+function placeBet(){
+   setTimeout(function(){ 
+       click(); 
+    }, getRandomWait());
 }
 
 function reset(){												//funkja resetujaca stawke
@@ -57,14 +58,13 @@ function reset(){												//funkja resetujaca stawke
     bilansCurrent = 0;
 }
 
-function floatToInt(number){
-    return number * 10000000;
+function startGame(){							//funkcja rozpoczynajaca dzialanie skryptu
+    reset();									//resetowanie stawki 
+    placeBet();
 }
 
-function placeBet(){
-   setTimeout(function(){ 
-       click(); 
-    }, getRandomWait());
+function floatToInt(number){
+    return number * 10000000;
 }
 
 function isMultiplyAllowed(){
