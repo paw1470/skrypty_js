@@ -5,7 +5,7 @@ loseReset = 10,
 waitMax = 777,									//maksymalna wartosc losowego czasu czekania (czas czekania bedzie mial wartosc minWait+(x < maxWait) )
 waitMin = 1,									//staly minimalny czas czekania
 buttonLo = true,								//zmienna dla wyboru przycisku na start, jak true to lo, false to hi
-betsNumberMax = 0,                                 //po ilu zakładach gra ma się zakończyć. 0 = bez limitu
+betsNumberMax = 0;                                 //po ilu zakładach gra ma się zakończyć. 0 = bez limitu
 
 //---------------------------------------DALEJ NIE RUSZAC BO SIE ZACZYNA KOD------------------------------------
 
