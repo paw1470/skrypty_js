@@ -25,7 +25,7 @@ function click(){			 						//funkcja klikajaca
             $loButton.trigger('click');	                // kliknij LO
         }else{											//Jeżeli nie to
             $hiButton.trigger('click');				     //klika HI
-       // }
+        }
         betsCounter++;	 //zwieksza licznik 
 }
 
@@ -41,7 +41,7 @@ function multiply(){										//funkcja zwiekszajaca wartosc stawki
 
 
 function getRandomWait(){										     //funkcja losująca czas oczekiwania przed kliknieciem
-    var wait = Math.floor(Math.random() * maxWait) + minWait;	      //okreslanie ile czasu skrypt ma czekac
+    var wait = Math.floor(Math.random() * waitMax) + waitMin;	      //okreslanie ile czasu skrypt ma czekac
     return wait ;												   //zwrocenie czasu oczekiwania do miejsca gdzi funkcja zostala wywolana
 }
 
@@ -52,7 +52,7 @@ function placeBet(){
 }
 
 function reset(){												//funkja resetujaca stawke
-    $('#double_your_btc_stake').val(startValue);				//ustawienie stawki do wartosci startowej
+    $('#double_your_btc_stake').val(betStart);				//ustawienie stawki do wartosci startowej
     loseCurrent = 0;
     winCurrent = 0;
     bilansCurrent = 0;
@@ -68,7 +68,7 @@ function floatToInt(number){
 }
 
 function isMultiplyAllowed(){
-    return (getCurrent() * 2) > maxValue;
+    return (getCurrent() * 2) > betMax;
     
 }
 
