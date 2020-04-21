@@ -1,0 +1,37 @@
+mutliplyBet( [wartosc] ); - mnoży zakład razy wartość. 2 to 2 razy większy. 2.5 to 2 i pół raza większy
+
+resetBetToDefaultValue(); - resetuje zakład do wartości domyślnej
+
+resetBetToSecondValue(); - resetuje zakład do drugiej wartości bo chciałeś żeby jak przegra kilka razy wracało do innej wartosci niz domyslna
+
+changeButton(); - zmienia wybrany przycisk na przeciwny
+
+resetRound(); - resetuje runde. runde rozumiem jako czas pojedynczej gry czyli domyslnie było do pierwzej wygranej
+
+resetGame(); - resetuje wszystko. opcja jest ale raczej jej nie używaj
+
+startGame(); - resetuje rundę i klika przycisk
+
+isMoneyEnough(); - sprawdza czy po kliknięciu przy aktualnym zakładzie zostanie minimalna wartość jaka ma zostać na koncie.
+
+stopBeforeRedirect(); - zatrzymuje klikanie jeżeli czas pozostały do jakiegoś przekieowania jest mniejszy niż coś. wartość w zmiennej w minutach. 
+
+win(); - co ma zrobić po wygranej
+
+lose(); - co ma zrobić po przegranej
+
+showBalanceTotal(); - wyswietla stan konta i jak się zmienił od początku gry. reset rundy nie resetuje balansu gry
+
+showWinRateTotal(); - wyświetla ile razy wygrałeś i przegrałeś. jak to wygląda w %
+
+p(); zmien stan gry zatrzymaj albo uruchom po zatrzymaniu
+
+go(); uruchom grę. continue to nazwa zarezerwowana więc musiałem użyć coś innego
+
+pause(); - zatrzymaj grę
+
+clickButton(); - klika w przycisk po losowym czasie jeżeli może;
+
+cs( [wartosc] ); - funkcja wyswietli w konsoli to co jej podasz. nie uzywaj bo to tylko moje do debugowania
+
+getRandomWaitTime(); - zwraca losowy czas do klikniecia
