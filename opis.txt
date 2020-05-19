@@ -1,16 +1,30 @@
 mutliplyBet( [wartosc] ); - mnoży zakład razy wartość. 2 to 2 razy większy. 2.5 to 2 i pół raza większy
 
-resetBetToDefaultValue(); - resetuje zakład do wartości domyślnej
+setBetValue ( [wartosc] ); - ustawia wartosc zakladu na wartosc
 
+resetBetToDefaultValue(); - resetuje zakład do wartości domyślnej
 resetBetToSecondValue(); - resetuje zakład do drugiej wartości bo chciałeś żeby jak przegra kilka razy wracało do innej wartosci niz domyslna
 
+clickHalfBet(); - klika przycisk /2
+click2xBet(); - klika 2x
+clickMinBet(); - klika min
+clickMaxBet(); - klika max
+
+
 changeButton(); - zmienia wybrany przycisk na przeciwny
+
+$button = $buttonLo; - ustawienie przycisku lo
+$button = $buttonHi; - ustawenie przycisku hi
+
+
+cs( "[wartosc]" ); - wyswietli w konsoli to co napiszesz w "";
+
 
 resetRound(); - resetuje runde. runde rozumiem jako czas pojedynczej gry czyli domyslnie było do pierwzej wygranej
 
 resetGame(); - resetuje wszystko. opcja jest ale raczej jej nie używaj
 
-startGame(); - resetuje rundę i klika przycisk
+restartGame(); - resetuje rundę i klika przycisk
 
 isMoneyEnough(); - sprawdza czy po kliknięciu przy aktualnym zakładzie zostanie minimalna wartość jaka ma zostać na koncie.
 
@@ -32,6 +46,5 @@ pause(); - zatrzymaj grę
 
 clickButton(); - klika w przycisk po losowym czasie jeżeli może;
 
-cs( [wartosc] ); - funkcja wyswietli w konsoli to co jej podasz. nie uzywaj bo to tylko moje do debugowania
 
 getRandomWaitTime(); - zwraca losowy czas do klikniecia
